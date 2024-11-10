@@ -11,81 +11,37 @@
       ]
     },
     
-{
-      "name": "Payroll",
-      "icon": "menu-icon tf-icons ti ti-layout-sidebar",
-      "slug": "layouts",
-      "submenu": [
-        {
-      "url": "payroll/view",
-      "name": "PAYROLL",
-      "icon": "menu-icon tf-icons ti ti-clock",
-      "slug": "payroll-view"
-    },     {
-      "url": "deduction",
-      "name": "Deduction",
-      "icon": "menu-icon tf-icons ti ti-clock",
-      "slug": "deduction"
-    }
-      ]
-    },
-
-{
-      "name": "Corehuman Capital",
-      "icon": "menu-icon tf-icons ti ti-layout-sidebar",
-      "slug": "layouts",
-      "submenu": [
-        {
-      "url": "Employeeprofile/view",
-      "name": "Employee Profile",
-      "icon": "menu-icon tf-icons ti ti-clock",
-      "slug": "Employeeprofile-view"
-    },
-
     {
-      "url": "Performance/view",
-      "name": "Performance Management",
-      "icon": "menu-icon tf-icons ti ti-clock",
-      "slug": "Performance-view"
-    },     {
-      "url": "Compensation/view",
-      "name": "Compensation and Payroll",
-      "icon": "menu-icon tf-icons ti ti-clock",
-      "slug": "Compensation-view"
-    },  {
-      "url": "Leavemanagement/view",
-      "name": "Leave management",
-      "icon": "menu-icon tf-icons ti ti-clock",
-      "slug": "Leavemanagement-view"
-    },  {
-      "url": "recruitment/view",
-      "name": "Recruitment",
-      "icon": "menu-icon tf-icons ti ti-clock",
-      "slug": "recruitment-view"
-    }
-      ]
-    },
-
-
-
-    {
-      "url": "analytic/view",
-      "name": "HR analytic",
+      "url": "placement/view",
+      "name": "Placement Management",
       "icon": "menu-icon tf-icons ti ti-file",
-      "slug": "analytic-view"
+      "slug": "placement-view"
     },
     {
       "url": "compensation/view",
-      "name": "COMPENSATION PLANING",
+      "name": "Position Job Management",
       "icon": "menu-icon tf-icons ti ti-wallet",
       "slug": "compensation-view"
     },
       {
       "url": "user/account",
-      "name": "User Account",
+      "name": "Payment & Payroll Management",
       "icon": "menu-icon tf-icons ti ti-user ",
       "slug": "user-account"
+    },
+      {
+      "url": "client/view",
+      "name": "Client Management",
+      "icon": "menu-icon tf-icons ti ti-user ",
+      "slug": "user-account"
+    },
+      {
+      "url": "client/agreement",
+      "name": "Client Agreement & Contract",
+      "icon": "menu-icon tf-icons ti ti-user ",
+      "slug": "client-agreement"
     }
+
 
     
 

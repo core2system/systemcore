@@ -2,8 +2,8 @@
 // Variables
 return [
  
-  "creatorUrl" => "https://pixinvent.com",
-  "templateName" => "HR4",
+  "creatorUrl" => "",
+  "templateName" => "CORE",
   "templateSuffix" => "SYSTEM",
   "templateVersion" => "1.0.0",
   "templateFree" => false,

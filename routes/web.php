@@ -157,65 +157,62 @@ use App\Http\Controllers\maps\Leaflet;
 
 
 Route::middleware('auth')->group(function(){
+Route::get('/placement/view', [App\Http\Controllers\placementController::class,'index'])->name('placement-view');
+
+Route::get('/client/view', [App\Http\Controllers\clientmanagementController::class,'index'])->name('client-view');
+
+Route::get('/applicant/view', [App\Http\Controllers\applicantController::class,'index'])->name('applicant-view');
+
+Route::post('/applicant', [App\Http\Controllers\placementController::class,'store'])->name('applicant.store');
+
+Route::post('/applicant.update', [App\Http\Controllers\placementController::class,'update'])->name('applicant.update');
+
+Route::get('/client/agreement', [App\Http\Controllers\clientcontractController::class,'index'])->name('client-agreement');
+
+
+
+
+
 
 Route::get('/app/chat', [Chat::class, 'index'])->name('app-chat');
 Route::post('/logout', [App\Http\Controllers\LogoutController::class, 'logout'])->name('logout');
 Route::get('/app/calendar', [Calendar::class, 'index'])->name('app-calendar');
 Route::post('/claims', [App\Http\Controllers\ClaimController::class, 'store'])->name('claims.store');
-Route::get('/claims/{id}', [App\Http\Controllers\ClaimController::class, 'edit'])->name('claims.edit');
-Route::put('/claims/{id}', [App\Http\Controllers\ClaimController::class, 'update'])->name('claims.update');
-Route::delete('/claims/{id}', [App\Http\Controllers\ClaimController::class, 'destroy'])->name('claims.delete');
-Route::post('/Leave', [App\Http\Controllers\LeaveController::class,'store'])->name('Leave.store');
-Route::post('/Leaveupdate', [App\Http\Controllers\LeaveController::class,'Leaveupdate'])->name('Leaveupdate.Leaveupdate');
-Route::delete('/Leave/{id}', [App\Http\Controllers\LeaveController::class, 'destroy'])->name('Leave.delete');
-Route::get('/app/kanban', [Kanban::class, 'index'])->name('app-kanban');
-Route::post('/Shift_and_schedule', [App\Http\Controllers\ShiftandschedulingController::class,'store'])->name('Shift_and_schedule.store');
-	Route::delete('/Shift_and_schedule/{id}', [App\Http\Controllers\ShiftandschedulingController::class, 'destroy'])->name('Shift_and_schedule.delete');
-Route::post('/Shift_and_schedules', [App\Http\Controllers\ShiftandschedulingController::class,'update'])->name('Shift_and_schedules.update');
+
 Route::get('/user/account', [App\Http\Controllers\UseraccountController::class, 'index'])->name('user-account');
 
 Route::post('/user_account', [App\Http\Controllers\UseraccountController::class,'store'])->name('user_account.store');
 
-Route::get('/time/and/attendance', [App\Http\Controllers\timeandattendance::class, 'index'])->name('time-and-attendance');
-
-Route::get('/payroll/view', [App\Http\Controllers\payrollController::class, 'index'])->name('payroll-view');
-
-Route::get('/deduction', [App\Http\Controllers\DeductionController::class, 'index'])->name('deduction');
-Route::get('/compensation/view', [App\Http\Controllers\compensationController::class, 'index'])->name('compensation-view');
-Route::get('/analytic/view', [App\Http\Controllers\analytic::class, 'index'])->name('analytic-view');
 
 
-Route::post('/compensation', [App\Http\Controllers\compensationController::class, 'store'])->name('compensation.store');
+Route::get('/client', [App\Http\Controllers\clientprofileController::class,'index'])->name('client-profile');
+Route::post('/jobportal.storeImage', [App\Http\Controllers\clientprofileController::class,'storeImage'])->name('jobportal.storeImage');
 
+Route::post('/client.update', [App\Http\Controllers\clientprofileController::class,'update'])->name('client.update');
 
-Route::post('/deduction', [App\Http\Controllers\DeductionController::class, 'store'])->name('store');
-
-
-Route::get('/Leavemanagement/view', [App\Http\Controllers\LeaveManagementController::class, 'index'])->name('Leavemanagement-view');
-
-Route::get('/Compensation/view', [App\Http\Controllers\compensationControl::class, 'index'])->name('Compensation-view');
-
-Route::get('/Employeeprofile/view', [App\Http\Controllers\EmployeeprofileController::class, 'index'])->name('Employeeprofile-view');
-
-Route::get('/Performance/view', [App\Http\Controllers\PerformanceController::class, 'index'])->name('Performance-view');
-
-Route::get('/recruitment/view', [App\Http\Controllers\RecruitmentController::class, 'index'])->name('recruitment-view');
-
-Route::post('/recruitment', [App\Http\Controllers\RecruitmentController::class, 'store'])->name('store');
-Route::post('/Recruiteupdate', [App\Http\Controllers\RecruitmentController::class, 'Recruiteupdate'])->name('Recruiteupdate');
-
-Route::post('/recruitment_update', [App\Http\Controllers\RecruitmentController::class, 'update_request'])->name('update_request');
 
 
 
 });
 
 
+Route::get('/contact', [App\Http\Controllers\contactController::class,'index'])->name('index');
+Route::get('/about', [App\Http\Controllers\aboutController::class,'index'])->name('index');
+
 
 
 
 // Main Page Route
-Route::get('/', [LoginBasic::class, 'index'])->name('auth-login-basic');
+Route::post('/login', [App\Http\Controllers\Homecontroller::class, 'login'])->name('login');
+
+Route::get('/', [App\Http\Controllers\Homecontroller::class, 'index'])->name('home-view');
+
+Route::get('/signup', [App\Http\Controllers\signupController::class, 'index'])->name('signup-view');
+Route::post('/signup.store', [App\Http\Controllers\signupController::class, 'store'])->name('signup.store');
+Route::get('/contact', [App\Http\Controllers\contactController::class,'index'])->name('index');
+
+
+
 Route::get('/login', [LoginBasic::class, 'index'])->name('login');
 Route::post('/', [LoginBasic::class,'loginpost'])->name('auth-login-basic');
 

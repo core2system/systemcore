@@ -92,10 +92,7 @@
               <i class="ti ti-dots-vertical"></i>
             </button>
             <div class="dropdown-menu">
-              <a class="dropdown-item" id="openpayroll">
-                <button class="btn  btn-danger btn-sm btn-flat mb-3" style="font-size:15px;" id="openpayroll"><i class="fas fa-print" id="openpayroll"></i></button>
-              Print Payslip</a>
-              <a class="dropdown-item">
+                          <a class="dropdown-item">
                 <button class="btn  btn-success btn-sm btn-flat mb-3" style="font-size:15px;" id="update"><i class="far fa-edit"></i></button>
               Update</a>
 
@@ -238,7 +235,7 @@ mysqli_select_db($conn,"$db_name")or die("cannot select DB");
 
 
 <!-- Modal for insert  record  exam applicant -->
-<div class="modal" id="payroll" tabindex="-1" role="dialog" aria-labelledby="ggg" aria-hidden="true">
+<div class="modal" id="" tabindex="-1" role="dialog" aria-labelledby="ggg" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">

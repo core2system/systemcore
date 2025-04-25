@@ -7,7 +7,6 @@ use App\Http\Controllers\apps\Chat;
 use App\Http\Controllers\apps\Kanban;
 use App\Http\Controllers\apps\Email;
 use App\Http\Controllers\apps\Calendar;
-
 use App\Http\Controllers\timeandattendance;
 use App\Http\Controllers\language\LanguageController;
 use App\Http\Controllers\layouts\CollapsedMenu;
@@ -22,15 +21,12 @@ use App\Http\Controllers\layouts\WithoutNavbar;
 use App\Http\Controllers\layouts\Fluid;
 use App\Http\Controllers\layouts\Container;
 use App\Http\Controllers\layouts\Blank;
-
 use App\Http\Controllers\front_pages\Landing;
 use App\Http\Controllers\front_pages\Pricing;
 use App\Http\Controllers\front_pages\Payment;
 use App\Http\Controllers\front_pages\Checkout;
 use App\Http\Controllers\front_pages\HelpCenter;
 use App\Http\Controllers\front_pages\HelpCenterArticle;
-
-
 use App\Http\Controllers\apps\EcommerceCustomerDetailsSecurity;
 use App\Http\Controllers\apps\EcommerceCustomerDetailsNotifications;
 use App\Http\Controllers\apps\EcommerceManageReviews;
@@ -55,7 +51,6 @@ use App\Http\Controllers\apps\UserViewSecurity;
 use App\Http\Controllers\apps\UserViewBilling;
 use App\Http\Controllers\apps\UserViewNotifications;
 use App\Http\Controllers\apps\UserViewConnections;
-
 use App\Http\Controllers\apps\AccessPermission;
 use App\Http\Controllers\pages\UserProfile;
 use App\Http\Controllers\pages\UserTeams;
@@ -158,7 +153,7 @@ use App\Http\Controllers\maps\Leaflet;
 
 Route::middleware('auth')->group(function(){
 Route::get('/placement/view', [App\Http\Controllers\placementController::class,'index'])->name('placement-view');
-
+Route::post('/placementstore', [App\Http\Controllers\placementController::class,'storeplacement'])->name('storeplacement');
 Route::get('/client/view', [App\Http\Controllers\clientmanagementController::class,'index'])->name('client-view');
 
 Route::get('/applicant/view', [App\Http\Controllers\applicantController::class,'index'])->name('applicant-view');
@@ -169,8 +164,7 @@ Route::post('/applicant.update', [App\Http\Controllers\placementController::clas
 
 Route::get('/client/agreement', [App\Http\Controllers\clientcontractController::class,'index'])->name('client-agreement');
 
-
-
+Route::post('/storecontract', [App\Http\Controllers\clientcontractController::class,'storefile'])->name('storefile');
 
 
 
@@ -178,32 +172,43 @@ Route::get('/app/chat', [Chat::class, 'index'])->name('app-chat');
 Route::post('/logout', [App\Http\Controllers\LogoutController::class, 'logout'])->name('logout');
 Route::get('/app/calendar', [Calendar::class, 'index'])->name('app-calendar');
 Route::post('/claims', [App\Http\Controllers\ClaimController::class, 'store'])->name('claims.store');
-
 Route::get('/user/account', [App\Http\Controllers\UseraccountController::class, 'index'])->name('user-account');
-
 Route::post('/user_account', [App\Http\Controllers\UseraccountController::class,'store'])->name('user_account.store');
-
-
-
 Route::get('/client', [App\Http\Controllers\clientprofileController::class,'index'])->name('client-profile');
 Route::post('/jobportal.storeImage', [App\Http\Controllers\clientprofileController::class,'storeImage'])->name('jobportal.storeImage');
-
 Route::post('/client.update', [App\Http\Controllers\clientprofileController::class,'update'])->name('client.update');
+Route::post('/deleted', [App\Http\Controllers\UseraccountController::class,'destroy'])->name('destroy');
+Route::post('/updateuser', [App\Http\Controllers\UseraccountController::class,'update'])->name('update');
 
+Route::get('/payroll/view', [App\Http\Controllers\payrollController::class,'index'])->name('index');
 
-
-
+Route::post('/payrollstore', [App\Http\Controllers\payrollController::class,'createpayroll'])->name('createpayroll');
+Route::post('/payrollupdate', [App\Http\Controllers\payrollController::class,'paid'])->name('paid');
+Route::get('/history/view', [App\Http\Controllers\transactionController::class,'index'])->name('index');
+Route::get('/position/job/view', [App\Http\Controllers\positionjobController::class,'index'])->name('index');
 });
+
+
+
 
 
 Route::get('/contact', [App\Http\Controllers\contactController::class,'index'])->name('index');
 Route::get('/about', [App\Http\Controllers\aboutController::class,'index'])->name('index');
+
+Route::get('/applicant/info', [App\Http\Controllers\applicantinfoController::class,'index'])->name('index');
+
+Route::post('/applicantview', [App\Http\Controllers\applicantinfoController::class,'applicant'])->name('applicant');
+
+Route::post('/candidate', [App\Http\Controllers\applicantinfoController::class,'selectcandidate'])->name('selectcandidate');
+
+
 
 
 
 
 // Main Page Route
 Route::post('/login', [App\Http\Controllers\Homecontroller::class, 'login'])->name('login');
+
 
 Route::get('/', [App\Http\Controllers\Homecontroller::class, 'index'])->name('home-view');
 
@@ -255,25 +260,7 @@ Route::get('/app/email', [Email::class, 'index'])->name('app-email');
 
 Route::get('/time/and/attendance', [timeandattendance::class,'index'])->name('time-and-attendance');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Route::get('/app/ecommerce/product/list', [EcommerceProductList::class, 'index'])->name('app-ecommerce-product-list');
-
-
-
-
 
 Route::get('/app/ecommerce/manage/reviews', [EcommerceManageReviews::class, 'index'])->name('app-ecommerce-manage-reviews');
 Route::get('/app/ecommerce/referrals', [EcommerceReferrals::class, 'index'])->name('app-ecommerce-referrals');
@@ -283,8 +270,6 @@ Route::get('/app/ecommerce/settings/checkout', [EcommerceSettingsCheckout::class
 Route::get('/app/ecommerce/settings/shipping', [EcommerceSettingsShipping::class, 'index'])->name('app-ecommerce-settings-shipping');
 Route::get('/app/ecommerce/settings/locations', [EcommerceSettingsLocations::class, 'index'])->name('app-ecommerce-settings-locations');
 Route::get('/app/ecommerce/settings/notifications', [EcommerceSettingsNotifications::class, 'index'])->name('app-ecommerce-settings-notifications');
-
-
 
 Route::get('/app/academy/course-details', [AcademyCourseDetails::class, 'index'])->name('app-academy-course-details');
 
@@ -305,7 +290,11 @@ Route::get('/app/user/view/connections', [UserViewConnections::class, 'index'])-
 Route::get('/app/access-permission', [AccessPermission::class, 'index'])->name('app-access-permission');
 
 // pages
-Route::get('/pages/profile-user', [UserProfile::class, 'index'])->name('pages-profile-user');
+Route::get('/pages/user/profile', [UserProfile::class, 'index'])->name('pages-profile-user');
+Route::post('/storeImage', [UserProfile::class,'storeImage'])->name('storeImage');
+Route::post('/userupdate', [UserProfile::class,'update'])->name('userupdate');
+
+
 Route::get('/pages/profile-teams', [UserTeams::class, 'index'])->name('pages-profile-teams');
 Route::get('/pages/profile-projects', [UserProjects::class, 'index'])->name('pages-profile-projects');
 Route::get('/pages/profile-connections', [UserConnections::class, 'index'])->name('pages-profile-connections');

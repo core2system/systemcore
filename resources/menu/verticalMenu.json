@@ -17,29 +17,46 @@
       "icon": "menu-icon tf-icons ti ti-file",
       "slug": "placement-view"
     },
+
     {
-      "url": "compensation/view",
+      "url": "position/job/view",
       "name": "Position Job Management",
       "icon": "menu-icon tf-icons ti ti-wallet",
-      "slug": "compensation-view"
-    },
-      {
-      "url": "user/account",
+      "slug": "position-job-view"
+    },{
       "name": "Payment & Payroll Management",
-      "icon": "menu-icon tf-icons ti ti-user ",
-      "slug": "user-account"
+      "icon": "menu-icon tf-icons ti ti-layout-sidebar",
+      "slug": "layouts",
+      "submenu": [
+        {
+      "url": "payroll/view",
+      "name": "Payroll",
+      "icon": "menu-icon tf-icons ti ti-messages",
+      "slug": "payroll-view"
+    },     {
+      "url": "history/view",
+      "name": "History",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "history-view"
+    }
+      ]
     },
       {
       "url": "client/view",
       "name": "Client Management",
       "icon": "menu-icon tf-icons ti ti-user ",
-      "slug": "user-account"
+      "slug": "client-view"
     },
       {
       "url": "client/agreement",
       "name": "Client Agreement & Contract",
       "icon": "menu-icon tf-icons ti ti-user ",
       "slug": "client-agreement"
+    },{
+      "url": "user/account",
+      "name": "User Account",
+      "icon": "menu-icon tf-icons ti ti-user ",
+      "slug": "user-account"
     }
 
 

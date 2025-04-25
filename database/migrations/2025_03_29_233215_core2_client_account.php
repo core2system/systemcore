@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-            Schema::create('core_client_account', function (Blueprint $table) {
-         $table->id('client_id');
+       Schema::create('core2_client_account', function (Blueprint $table) {
+           $table->string('client_id')->nullable();
+            $table->primary(['client_id']);
          $table->string('firstname')->nullable();
          $table->string('middlename')->nullable();
          $table->string('lastname')->nullable();
@@ -21,8 +22,7 @@ return new class extends Migration
          $table->string('email')->nullable();
          $table->string('company_address')->nullable();
          $table->string('status')->nullable();
-         $table->string('client_code')->nullable();
-           $table->string('image')->nullable();
+         $table->string('image')->nullable();
          $table->timestamps();
   //
      });

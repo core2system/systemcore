@@ -17,7 +17,7 @@ class clientprofileController extends Controller
 
     $id=Auth::user()->code_id;
 
-  $profiles = DB::select("select  * FROM  core_client_account where  client_code='$id' ");
+  $profiles = DB::select("select  * FROM  core2_client_account where  client_id='$id' ");
 
       $pageConfigs = ['myLayout' => 'blank'];
           return view('content.applicant.client-profile',['profiles' =>$profiles],['pageConfigs' => $pageConfigs]);
@@ -50,9 +50,6 @@ $app = signup::where('client_id',$id);
     return back();
        
     }
-
-
-    
 public function update(Request $request){
 $user_id=Auth::user()->id;
 $id=$request->client_id;
@@ -70,16 +67,9 @@ $id=$request->client_id;
             'contact' => $request->contact,
    
         ]);
-
    $user->update([
             'email' =>$request->email,
         ]);
     return back();
-
-
     }
-
-  
-
-
 }

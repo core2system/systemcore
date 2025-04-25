@@ -12,7 +12,7 @@ class clientmanagementController extends Controller
       public function index()
   {
 
- $client = DB::select("select  * FROM core_client_account");
+ $client = DB::select("select  * FROM core2_client_account");
 
       return view('content.core.client-view',['client'=>$client]);
 

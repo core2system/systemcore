@@ -9,7 +9,7 @@
 @endsection
 
 @section('page-style')
-  @vite('resources/assets/vendor/scss/pages/app-chat.scss')
+@vite('resources/assets/vendor/scss/pages/app-chat.scss')
 @endsection
 
 @section('vendor-script')
@@ -19,10 +19,10 @@
 @vite('resources/assets/js/app-chat.js')
 @endsection
 @section('content')
-  <div class="">
-    <div class="card">
+<div class="">
+  <div class="card">
 
-          <div style="display:flex;margin-bottom:3%;">
+    <div style="display:flex;margin-bottom:3%;">
       <form class=" mt-3 ml-3 mw-100 navbar-search"  style="margin-left:7px" autocomplete="off">
         <div class="input-group">
           <input type="text"  id="myInput" onkeyup="myFunction()" class="form-control bg-light border-1 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" >
@@ -35,40 +35,116 @@
       </form>
     </div>
 
-      <div class="card-datatable table-responsive">
-        <table class="datatables-projects table border-top">
-          <thead>
-    <tr>
-         <th>Client Name</th>
-         <th>Client Company</th>
-         <th>Contact Number</th>
-         <th>email</th>
-         <th>Contract</th>
-         <th>Applicant</th>
-       </tr>
-          </thead>
-          <tbody>
-            @foreach($client as $emp)
-            <tr class="contents">
-              <td class="titles">{{$emp->firstname}}</td>
-              <td>{{$emp->company}}</td>
-              <td>{{$emp->contact}}</td>
-              <td>{{$emp->email}}</td>
-               <td><button class="btn btn-sm btn-flat btn-warning">Contract</button></td>
-                 <td><button class="btn btn-sm btn-flat btn-primary">View</button></td>
-            </tr>
-            @endforeach
-          </tbody>
-        </table>
+    <div class="card-datatable table-responsive">
+      <table class="datatables-projects table border-top">
+        <thead>
+          <tr>
+           <th>Client Name</th>
+           <th>Client Company</th>
+           <th>Contact Number</th>
+           <th>email</th>
+           <th>Contract</th>
+           <th>Employee Name</th>
+           <th>Action</th>
+         </tr>
+       </thead>
+       <tbody>
+        @foreach($client as $emp)
+        <tr class="contents">
+          <td style="display:none;">{{$emp->contract_id}}</td>
+          <td class="titles">{{$emp->clientname}}</td>
+          <td>{{$emp->company}}</td>
+          <td>{{$emp->contact}}</td>
+          <td>{{$emp->email}}</td>
+          <td>
+           <?php
+
+           $file=$emp->contract_file;
+           if(empty($file)){?>
+            <label>N/A</label>
+           <?php
+            }else{ 
+
+            ?>
+            <button class="btn  btn-sm btn-flat btn-primary">
+
+              <a href="http://127.0.0.1:8000/assets/img/<?php echo $emp->contract_file;?>" style="color:white;" target="_blank" >
+                view
+              </a>
+            </button>
+          <?php }
+
+          ?>
+        </td>
+        <td>{{$emp->employee}}</td>
+        <td> 
+          <div class="dropdown">
+            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+              <i class="ti ti-dots-vertical"></i>
+            </button>
+            <div class="dropdown-menu">
+
+              <a class="dropdown-item" id="open_resume">
+
+                <button type="button"  id="open_resume" class="btn  btn-danger btn-sm btn-flat mb-3" style="font-size:15px;">
+
+                  <i class="fas fa-file-upload" id="open_resume"></i>
+                </button>
+                Upload contract
+              </a>
+
+              <a class="dropdown-item">
+                <button type="button"  id="viewmodal" class="btn  btn-warning btn-sm btn-flat mb-3" style="font-size:15px;">
+                  <i class="fa-solid fa-eye"  id="viewmodal"></i>
+                </button>
+                Employee Info
+              </a>
+            </div>
+          </div>
+        </td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+
+
+
+<div class="modal" tabindex="-1" role="dialog" id="resume_modal">
+  <div class="modal-dialog" role="document">
+   <form method="POST"   action="{{url('storecontract')}}" enctype="multipart/form-data">
+    @csrf
+    @method('POST')
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center" style="text-align:center;">UPLOAD CONTRACT</h5>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+
+          <input  type="file" class="form-control" name="contract_file">
+        </div>
+
+        <input  type="text" class="form-control" name="contract_id" id="contract_id" style="display:none;">
+
+        <div class="modal-footer">
+          <button type="submit" name="submit" class="btn btn-primary">SAVE</button>
+          <button type="button" class="btn btn-danger" id="modal_close">Close</button>
+        </div>
       </div>
     </div>
-  </div>
+  </form>
+</div>
+</div>
 
 @endsection
 
 <script type="text/javascript">
-  
- 
+
+
  $(document).ready(function(){
   $('#myInput').keyup(function(){
 // Search text
@@ -80,7 +156,23 @@
     $('.contents .titles:contains("'+text+'")').closest('.contents').show();
   });
 
- });
+});
 
+
+
+
+</script>
+
+<script >
+  $(document).on('click', '#open_resume', function () {
+    $('form')[0].reset();
+    var tr = $(this).closest("tr").find('td');
+    $('#contract_id').val(tr.eq(0).text());
+    $('#resume_modal').modal('show');
+  });
+
+  $(document).on('click', '#modal_close', function () {
+    $('#resume_modal').modal('hide');
+  });
 
 </script>

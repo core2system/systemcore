@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class signup extends Model
 {
     use HasFactory;
-    protected $table="core_client_account";
+    protected $table="core2_client_account";
 
   protected $fillable=[
     'client_id',

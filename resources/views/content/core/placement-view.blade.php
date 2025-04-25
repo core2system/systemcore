@@ -8,11 +8,9 @@
 @section('vendor-style')
 @vite('resources/assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.scss')
 @endsection
-
 @section('page-style')
 @vite('resources/assets/vendor/scss/pages/app-chat.scss')
 @endsection
-
 @section('vendor-script')
 @vite('resources/assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js')
 @endsection
@@ -22,10 +20,8 @@
 @section('content')
 <div class="">
   <div class="card">
-
     <div style="display:flex;margin-bottom:3%;">
-      <button class="btn  btn-primary btn-sm btn-flat mt-3 " style="margin-left:7px;font-size:15px;width:13%;height:38px;"  id="openmodels"><i class="fas fa-plus-square"></i>Insert Info</button>
-
+      <button class="btn  btn-primary btn-sm btn-flat mt-3 " style="margin-left:7px;font-size:15px;width:13%;height:38px;"  id="openmodal"><i class="fas fa-plus-square"></i>Insert Info</button>
       <form class=" mt-3 ml-3 mw-100 navbar-search"  style="margin-left:7px" autocomplete="off">
         <div class="input-group">
           <input type="text"  id="myInput" onkeyup="myFunction()" class="form-control bg-light border-1 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" >
@@ -43,7 +39,9 @@
         <thead>
           <tr>
            <th>Applicant Name</th>
-           <th>Applicant Code</th>
+           <th>Applicant Id</th>
+           <th>JObrole</th>
+           <th>Department</th>
            <th>Contact</th>
            <th>Email</th>
            <th>Training Fee</th>
@@ -51,28 +49,30 @@
            <th>Action</th>
          </tr>
          <tbody>
-          @foreach($employee as $emp)
+          @foreach($applicant as $app)
           <tr class="contents">
-            <td class="titles">{{$emp->firstname}}</td>
-            <td>{{$emp->employee_code}}</td>
-            <td>{{$emp->contact}}</td>
-            <td>{{$emp->email}}</td>
-            <td>{{$emp->trainee_fee}}</td>
+            <td class="titles">{{$app->firstname}}</td>
+            <td>{{$app->applicant_id}}</td>
+            <td>{{$app->jobrole}}</td>
+            <td>{{$app->department}}</td>
+            <td>{{$app->contact}}</td>
+            <td>{{$app->email}}</td>
+            <td>{{$app->trainee_fee}}</td>
             <td>
              <?php 
-             $status=$emp->status;
+             $status=$app->st;
              if($status=='post'){?>
-               <span class="badge bg-primary">{{$emp->status}}</span>
+               <span class="badge bg-primary">{{$app->st}}</span>
              <?php }?>
            </td>
            <td>
             <?php 
-            $status=$emp->status;
+            $status=$app->st;
             if($status=='post'){?>
             <?php }else{ ?>
               <form  action="{{route('applicant.update')}}" id="formAuthentication" class="mb-3" method="POST">
                 @csrf
-                <input type="text" name="employee_id" value="{{$emp->employee_id}}" style="display:none;">
+                <input type="text" name="employee_id" value="{{$app->qualified_id}}" style="display:none;">
                 <button class="btn  btn-primary btn-flat btn-sm">POST</button>
               </form>
             <?php }?>
@@ -86,104 +86,138 @@
 </div>
 </div>
 
-
-<div class="modal" tabindex="-1" role="dialog" id="smallModal">
-  <div class="modal-dialog" role="document">
-    <form  action="{{route('applicant.store')}}" id="formAuthentication" class="mb-3" method="POST" enctype="multipart/form-data">
-      @csrf
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">ADD APPLICANT</h5>
-        </div>
-        <div class="modal-body">
-            <label>PICTURE</label>
-         <div class="form-group">
-           <input type="file" name="image" class="form-control">
-         </div>
-
-         <label>FIRST NAME</label>
-         <div class="form-group">
-           <input type="text" name="first" class="form-control">
-         </div>
-         <label>MIDDLE NAME</label>
-         <div class="form-group">
-           <input type="text" name="middle" class="form-control">
-         </div>
-
-         <label>LAST NAME</label>
-         <div class="form-group">
-           <input type="text" name="last" class="form-control">
-         </div>
-
-         <label>EMAIL</label>
-         <div class="form-group">
-           <input type="email" name="email" class="form-control">
-         </div>
-
-         <label>CONTACT</label>
-         <div class="form-group">
-           <input type="number" name="contact" class="form-control">
-         </div>
-
-         <label>TRAINING FEE</label>
-         <div class="form-group">
-           <input type="number" name="training_fee" class="form-control">
-         </div>
-         <label>JOB ROLES</label>
-         <div class="form-group">
-           <select name="role" class="form-control">
-             <option class="form-control">HR STAFF</option>
-             <option class="form-control">TRAINER</option>
-             <option class="form-control">SECRUITY GUARD</option>
-             <option class="form-control">JANITOR</option>
-           </select>
-         </div>
-
-             <label>Description</label>
-         <div class="form-group">
-          <textarea class="form-control" name="description"></textarea>
-         </div>
-
-       </div>
-       <div class="modal-footer">
-        <button type="SUBMIT" class="btn btn-primary">Save</button>
-        <button type="button" class="btn btn-danger" id="modal_close">Close</button>
+<!-- Modal for insert  record  exam applicant -->
+<div class="modal" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>APPLICANT EXAM </h5>
       </div>
+      <div class="modal-body">
+        <?php
+$host="localhost"; // Host name 
+$username="root"; // Mysql username 
+$password=""; // Mysql password 
+$db_name="coredb"; // Database name 
+$tbl_name="information"; // Table name 
+$conn = mysqli_connect("$host","$username","$password")or die("cannot connect"); 
+mysqli_select_db($conn,"$db_name")or die("cannot select DB");
+?>
+<div class="col-md-12" style="margin-bottom:5%;">
+  <div class="form-group">
+    <p>EMPLOYEE ID</p>
+    <input type="text" name="" placeholder="EMPLOYEE ID  OR EMPLOYEE NAME" class="form-control">
+  </div>
+
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th>APPLICANT ID</th>
+        <th>APPLICANT NAME</th>
+        <th>JOBROLE</th>
+        <th>ACTION</th>
+      </tr>
+    </thead>
+    <?php 
+    $selet ="SELECT *,core1_applicant_apply.status as  applystatus FROM `core1_applicant_apply`  inner  JOIN core1_applicant on  core1_applicant.applicant_code=core1_applicant_apply.applicant_id INNER JOIN core1_recruitment on core1_recruitment.recruitment_id=core1_applicant_apply.recruitment_id where core1_applicant_apply.status='Qualified'";
+    $query=mysqli_query($conn,$selet);
+    ?> 
+    <tbody>
+      <?php while($row=mysqli_fetch_assoc($query)){?>
+        <tr>
+          <td><?php echo  $row['applicant_code']?></td>
+          <td><?php echo  $row['firstname']?> <?php echo  $row['lastname']?></td>
+          <td><?php echo $row['jobrole']?></td>
+            <td style="display:none;"><?php echo $row['recruitment_id']?></td>
+         
+          <td><button class="btn btn-primary btn-sm  btn-flat" id="add">ADD</button></td>
+        </tr>
+      <?php }?>
+    </tbody>
+  </table>
+  <form method="POST" action="{{url('placementstore')}}">
+   @csrf
+   @method('POST')
+   <div class="row" style="margin-top:5%;">
+    <div class=" col-md-6"><label>APPLICANT ID</label>
+      <input type="text" class="form-control" id="empid"  name="empid">
+         <input type="hidden" class="form-control" id="rec_id"  name="rec_id">
+
     </div>
-  </form>
+
+    <div class=" col-md-6"><label>APPLICANT NAME</label>
+      <input type="text" class="form-control" id="fname" disabled>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Placement Fee</label>
+    <input type="number" name="fee" class="form-control">
+  </div>
+
+
+
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" id="modalclose">Close</button>
+    <button type="submit" class="btn btn-primary" >Save</button>
+  </div>
+</form>
+</div>
+</div>
+</div>
 </div>
 </div>
 
-<script >
-  $(document).on('click', '#modal_close', function () {
-    $('#smallModal').modal('hide');
 
+
+
+
+<script>
+  $(document).on('click', '#modalclose', function () {
+    $('#reviewModal').hide();
+  });
+  $(document).on('click', '#openmodal', function () {
+    $('#reviewModal').show();
   });
 
+
+
+
+  
+  $(document).on('click', '#updatedataclose', function () {
+    $('#updatemodal').hide();
+  });
+  $(document).on('click', '#add', function () {
+   $('form')[0].reset();
+   var tr = $(this).closest("tr").find('td');
+   $('#empid').val(tr.eq(0).text());
+   $('#fname').val(tr.eq(1).text());
+   $('#fname').val(tr.eq(1).text());
+     $('#rec_id').val(tr.eq(3).text());
+ });
 </script>
 
 
-<script >
-  $(document).on('click', '#openmodels', function () {
-    $('#smallModal').modal('show');
 
-
-  });
-
+<script type="text/javascript">
   $(document).ready(function(){
     $('#myInput').keyup(function(){
 // Search text
       var text = $(this).val();
 // Hide all content class element
       $('.contents').hide();
-
 // Search 
       $('.contents .titles:contains("'+text+'")').closest('.contents').show();
     });
-
   });
 
+
 </script>
+
+
+
+
 
 
 @endsection

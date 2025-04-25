@@ -1,6 +1,11 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+<script src="https://printjs-4de6.kxcdn.com/print.min.css"></script>
+
+
+
 
 @extends('layouts/layoutMaster')
 @section('title', 'Payroll')
@@ -23,264 +28,325 @@
 <div class="card">
   <div class="card">
     <div style="display:flex;">
-     <form class=" mt-3 ml-3 mw-100 navbar-search"  style="margin-left:7px" autocomplete="off">
-      <div class="input-group">
-        <input type="text"  id="myInput" onkeyup="myFunction()" class="form-control bg-light border-1 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" >
-        <div class="input-group-append">
-          <button class="btn btn-primary" type="button" style="height:40px;">
-            <i class="fas fa-search fa-sm"></i>
-          </button>
-        </div>
-      </div>
-    </form>
-  </div>    
-  <div class="card-datatable table-responsive">
-    <table class="datatables-projects table border-top">
-      <thead>
-        <tr>
-         <th>Employee ID</th>
-         <th>Employee Name</th>
-         <th>Pagibig Contrib</th>
-         <th>Philhealth Contrib</th>
-         <th>SSS Contrib</th>
-         <th>TOTAL</th>
-         <th>Action</th>
-       </tr>
-     </thead>
 
-     <tbody>
-      <?php           
-           $host="localhost"; // Host name 
-           $username="root"; // Mysql username 
-           $password=""; // Mysql password 
-           $db_name="database_01"; // Database name 
-           $tbl_name="information"; // Table name 
-           $conn = mysqli_connect("$host","$username","$password")or die("cannot connect"); 
-           mysqli_select_db($conn,"$db_name")or die("cannot select DB");
-           $select="SELECT * FROM hr1_employee_info  INNER JOIN hr4_deduction on hr4_deduction.employee_id=hr1_employee_info.employee_id";
-           $fetch=mysqli_query($conn,$select);?>
-           <?php while($row=mysqli_fetch_assoc($fetch)){?>
-            <tr class="contents">
-             <td class="titles"><?php echo $row['employee_id'];?></td>
-             <td><?php echo $row['employee_name'];?></td>
-             <td><?php echo $row['pagibig'];?></td>
-             <td><?php echo $row['philhealth'];?></td>
-             <td><?php echo $row['sss'];?></td>
-             <td><?php $id=$row['employee_id'];
-             $get_total="SELECT *,SUM(total_hrs) as  total,sum(over_time) as  overtime FROM `hr3_attendance`  WHERE date_time_in BETWEEN '2024-1-23' AND '2024-30-23' and employee_id='$id'";
-             $fetch_total=mysqli_query($conn,$get_total);
-             $mysql_total=mysqli_fetch_assoc($fetch_total); 
-             $total= $mysql_total['total']*86;
-             echo number_format($total,2);
-           ?></td>
-           <td>
-             <div class="dropdown">
-              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                <i class="ti ti-dots-vertical"></i>
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item">
-                  <button class="btn  btn-danger btn-sm btn-flat mb-3" style="font-size:15px;"><i class="fas fa-print"></i></button>
-                Print Payslip</a>
-                <a class="dropdown-item">
-                  <button class="btn  btn-success btn-sm btn-flat mb-3" style="font-size:15px;" id="update"><i class="far fa-edit"></i></button>
-                Update</a>
-              </div>
-            </div></td>
-          </tr>
-        <?php }?>
-      </tbody>
-    </table>
-  </div>
+      <button class="btn  btn-primary btn-sm btn-flat mt-3 " style="margin-left:7px;font-size:15px;width:13%;height:38px;"  id="openmodal"><i class="fas fa-plus-square"></i>Create payroll</button>
+
+      <form class=" mt-3 ml-3 mw-100 navbar-search"  style="margin-left:7px" autocomplete="off">
+        <div class="input-group">
+          <input type="text"  id="myInput" onkeyup="myFunction()" class="form-control bg-light border-1 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" >
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button" style="height:40px;">
+              <i class="fas fa-search fa-sm"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>    
+    <div class="card-datatable table-responsive">
+      <table class="datatables-projects table border-top">
+        <thead>
+          <tr>
+           <th>Employee ID</th>
+           <th>Employee Name</th>
+           <th>Jobrole</th>
+           <th>Basic</th>
+           <th>rate</th>
+           <th>Pagibig</th>
+           <th>Philhealth</th>
+           <th>SSS</th>
+           <th>Total Deduction</th>
+           <th>Net Pay</th>
+           <th>Date</th>
+           <th>Status</th>
+           <th>Action</th>
+         </tr>
+       </thead>
+
+       <tbody>
+        @foreach($payroll  as $pay)
+        <tr>
+          <td>{{$pay->employee_id}}</td>
+          <td>{{$pay->firstname}} {{$pay->lastname}}</td>
+          <td>{{$pay->jobrole}}</td>
+          <td>basic</td>
+          <td>{{$pay->rate}}</td>
+          <td>{{$pay->pagibig}}</td>
+          <td>{{$pay->philhealth}}</td>
+          <td>{{$pay->sss}}</td>
+          <td><?php $p=$pay->total_deduction; echo number_format($p, 2);?></td>
+          <td>{{$pay->net_pay}}</td>
+          <td>{{$pay->created_at}}</td>
+          <td >
+<?php  $s=$pay->sta; if($s=='Paid'){ ?>
+<span style="color:green">Paid</span>
+  <?php }else{ ?>
+<span style="color:red">Pending</span>
+  <?php } ?>
+
+
+
+</td>
+          <td>
+           <div class="dropdown">
+            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+              <i class="ti ti-dots-vertical"></i>
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" id="openpayroll">
+                <button class="btn  btn-danger btn-sm btn-flat mb-3" style="font-size:15px;" id="openpayroll"><i class="fas fa-print" id="openpayroll"></i></button>
+              Print Payslip</a>
+              <a class="dropdown-item">
+                <button class="btn  btn-success btn-sm btn-flat mb-3" style="font-size:15px;" id="update"><i class="far fa-edit"></i></button>
+              Update</a>
+
+              <?php  $s=$pay->sta; if($s=='Pending'){ ?>
+  <form action="{{url('payrollupdate')}}" method="Post">
+                   @csrf
+                <input type="hidden" name="payroll_id" value="{{$pay->payroll_id}}">
+                 <a class="dropdown-item">
+                <button type="submit" class="btn  btn-success btn-sm btn-flat mb-3" style="font-size:15px;" id="paid"><i class="fas fa-money-check-alt"></i>
+                </button>
+              Paid</a>
+            </form>
+
+  <?php } ?>
+            
+            </div>
+          </div>
+        </td>
+      </tr>
+      @endforeach
+      
+    </tbody>
+  </table>
+</div>
 </div>
 
 
-<div class="modal" tabindex="-1" role="dialog" id="payroll_edit">
-  <div class="modal-dialog" role="document">
-    <form  action="" id="formAuthentication" class="mb-3" method="POST">
-      @csrf
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">UPDATE INFO</h5>
-
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-4">
-              <label>EARNINGS</label>
-            </div>
-
-            <div class="col-md-4">
-              <label>HOURS</label>
-            </div>
-
-            <div class="col-md-4">
-              <label>AMOUNT</label>
-            </div>
-
-
-            <div class="col-md-4">
-              <div>BASIC SALARY</div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="form-group"><input type="number" class="form-control
-                "></div>
-              </div>
-
-              <div class="col-md-4">
-                <label>00.00</label>
-              </div>
-
-
-              <div class="col-md-4">
-                <div>RED OT</div>
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group"><input type="number" class="mt-1 form-control
-                  "></div>
-                </div>
-
-                <div class="col-md-4">
-                  <label>00.00</label>
-                </div>
-                <div class="col-md-4">
-                  <div>RG OT</div>
-                </div>
-
-                <div class="col-md-4">
-                  <div class="form-group"><input type="number" class="mt-1 form-control
-                    "></div>
-                  </div>
-
-                  <div class="col-md-4">
-                    <label>00.00</label>
-                  </div>
-
-
-                  <div class="col-md-4">
-                  </div>
-
-                  <div class="col-md-4">
-                    <label class="mt-1">TOTAL EARNING</label>
-                  </div>
-
-
-                  <div class="col-md-4">
-
-                  </div>
-
-
-
-                  <div class="col-md-4">
-                    <label>PAGIBIG CONTRIBUTION</label>
-                  </div>
-
-                  <div class="col-md-4">
-
-                  </div>
-
-                  <div class="col-md-4">
-                    <label>00.00</label>
-                  </div>
-
-
-
-                  <div class="col-md-4">
-                    <label>PHILHEALTH CONTRIBUTION</label>
-                  </div>
-
-                  <div class="col-md-4">
-
-                  </div>
-
-                  <div class="col-md-4">
-                    <label>00.00</label>
-                  </div>
-
-
-
-                  <div class="col-md-4">
-                   <label>SSS CONTRIBUTION</label>
-                 </div>
-
-                 <div class="col-md-4">
-
-                 </div>
-
-                 <div class="col-md-4">
-                  <label>00.00</label>
-                </div>
-
-
-
-                  <div class="col-md-4 mt-1" >
-                             </div>
-
-                 <div class="col-md-4 mt-3">
-                  <label>Total Deduction</label>
-                 </div>
-
-                 <div class="col-md-4 mt-3">
-                  <label>00.00</label>
-                </div>
-              </div>
-
-
-
-
-              <div class="modal-footer">
-                <button type="SUBMIT" class="btn btn-primary">Save changes</button>
-                <button type="button" class="btn btn-danger" id="modal_close">Close</button>
-              </div>
-            </div>
-          </form>
-        </div>
+<!-- Modal for insert  record  exam applicant -->
+<div class="modal" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>PAYROLL INFO </h5>
       </div>
+      <div class="modal-body">
+        <?php
+$host="localhost"; // Host name 
+$username="root"; // Mysql username 
+$password=""; // Mysql password 
+$db_name="coredb"; // Database name 
+$tbl_name="information"; // Table name 
+$conn = mysqli_connect("$host","$username","$password")or die("cannot connect"); 
+mysqli_select_db($conn,"$db_name")or die("cannot select DB");
+?>
+<div class="col-md-12" style="margin-bottom:5%;">
+  <div class="form-group">
+    <p>EMPLOYEE ID</p>
+    <input type="text" name="" placeholder="EMPLOYEE ID  OR EMPLOYEE NAME" class="form-control">
+  </div>
 
-      @endsection
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th>EMPLOYEE ID</th>
+        <th>EMPLOYEE NAME</th>
+        <th>JOBROLE</th>
+        <th>ACTION</th>
+      </tr>
+    </thead>
+    <?php 
+    $selet ="SELECT *,core1_applicant_apply.status as  applystatus FROM `core1_applicant_apply`  inner  JOIN core1_applicant on  core1_applicant.applicant_code=core1_applicant_apply.applicant_id INNER JOIN core1_recruitment on core1_recruitment.recruitment_id=core1_applicant_apply.recruitment_id where core1_applicant_apply.status='Qualified'";
+    $query=mysqli_query($conn,$selet);
+    ?> 
+    <tbody>
+      <?php while($row=mysqli_fetch_assoc($query)){?>
+        <tr>
+          <td><?php echo  $row['applicant_code']?></td>
+          <td><?php echo  $row['firstname']?> <?php echo  $row['lastname']?></td>
+          <td><?php echo $row['jobrole']?></td>
+          <td style="display:none;"><?php echo $row['recruitment_id']?></td>
+          <td style="display:none;"><?php echo $row['salary']?></td>
+          <td><button class="btn btn-primary btn-sm  btn-flat" id="add">ADD</button></td>
+        </tr>
+      <?php }?>
+    </tbody>
+  </table>
+  <form method="POST" action="{{url('payrollstore')}}">
+   @csrf
+   @method('POST')
+   <div class="row" style="margin-top:5%;">
+    <div class=" col-md-6"><label>EMPLOYEE ID</label>
+      <input type="text" class="form-control" id="empid"  name="empid">
+      <input type="hidden" class="form-control" id="rec_id"  name="rec_id">
+
+    </div>
+
+    <div class=" col-md-6"><label>EMPLOYEE NAME</label>
+      <input type="text" class="form-control" id="fname" >
+    </div>
+
+    <div class=" col-md-6 mt-2"><label>FROM</label>
+      <input type="date" class="form-control" name="from" >
+    </div>
+
+    <div class=" col-md-6 mt-2"><label>TO</label>
+      <input type="date" class="form-control" name="to" >
+    </div>
+
+
+  <div class=" col-md-6 mt-2"><label>salary</label>
+      <input type="text" class="form-control"name="basic_rate" id="basic_rate" >
+    </div>
+
+    <div class=" col-md-6 mt-2"><label>TOTAL HRS</label>
+      <input type="text" class="form-control" name="total_hrs" >
+    </div>
+
+<label style="margin-top:3%;margin-bottom:3%;text-align:center;">--------------------------------BENEFIT--------------------------------</label>
+  
+
+    <div class=" col-md-3 mt-2"><label>PAGIBIG</label>
+      <input type="number" class="form-control" name="pagibig" id="fname" value="600" >
+    </div>
+
+    <div class=" col-md-3 mt-2"><label>PHILHEALTH</label>
+      <input type="number" class="form-control" name="philhealth" id="philhealth" value="600">
+    </div>
+
+    <div class=" col-md-3 mt-2"><label>SSS</label>
+      <input type="number" class="form-control"  name="sss" id="sss" value="505">
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" id="modalclose">Close</button>
+      <button type="submit" class="btn btn-primary" >Save</button>
+    </div>
+  </form>
+</div>
+</div>
+</div>
+</div>
+</div>
 
 
 
-      <script >
-        $(document).on('click', '#modal_close', function () {
-          $('#payroll_edit').modal('hide');
-
-        });
-
-      </script>
 
 
-      <script >
-        $(document).on('click', '#update', function () {
-          $('#payroll_edit').modal('show');
-
-        });
-
-      </script>
+</div>
 
 
 
-      <script type="text/javascript">
+<!-- Modal for insert  record  exam applicant -->
+<div class="modal" id="payroll" tabindex="-1" role="dialog" aria-labelledby="ggg" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>PAYROLL INFO </h5>
+      </div>
+      <div class="modal-body">
+       
+       <div class="row">
+         <div class="col-md-4">EMPLOYEE ID:89812121</div>
+         <div class="col-md-4">FULLNAME:GERSON PUZON</div>
+         <div class="col-md-4">DATE:GERSON PUZON</div>
+         <div class="col-md-4">RATE:GERSON PUZON</div>
+
+       </div>  
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" id="modalclose">Close</button>
+      <button type="button" class="btn btn-primary" onclick="printJS('payroll', 'html')" >PRINT</button>
+    </div> 
+</div>
+</div>
+</div>
+</div>
 
 
-        $(document).ready(function(){
+
+
+
+
+@endsection
+
+
+
+<script >
+  $(document).on('click', '#modal_close', function () {
+    $('#payroll_edit').modal('hide');
+
+  });
+
+</script>
+
+
+<script >
+  $(document).on('click', '#update', function () {
+    $('#payroll_edit').modal('show');
+
+  });
+
+</script>
+
+
+
+<script type="text/javascript">
+
+
+  $(document).ready(function(){
 
 
 
 
 
-          $('#myInput').keyup(function(){
+    $('#myInput').keyup(function(){
 // Search text
-            var text = $(this).val();
+      var text = $(this).val();
 // Hide all content class element
-            $('.contents').hide();
+      $('.contents').hide();
 
 // Search 
-            $('.contents .titles:contains("'+text+'")').closest('.contents').show();
-          });
+      $('.contents .titles:contains("'+text+'")').closest('.contents').show();
+    });
 
-        });
+  });
 
-      </script>
+</script>
+
+
+
+<script>
+  $(document).on('click', '#modalclose', function () {
+    $('#reviewModal').hide();
+  });
+  $(document).on('click', '#openmodal', function () {
+    $('#reviewModal').show();
+  });
+
+
+    $(document).on('click', '#modalclose', function () {
+    $('#reviewModal').hide();
+  });
+  $(document).on('click', '#openpayroll', function () {
+    $('#payroll').show();
+  });
+
+
+
+
+
+  
+  $(document).on('click', '#updatedataclose', function () {
+    $('#updatemodal').hide();
+  });
+  $(document).on('click', '#add', function () {
+   $('form')[0].reset();
+   var tr = $(this).closest("tr").find('td');
+   $('#empid').val(tr.eq(0).text());
+   $('#fname').val(tr.eq(1).text());
+   $('#fname').val(tr.eq(1).text());
+   $('#rec_id').val(tr.eq(3).text());
+   $('#basic_rate').val(tr.eq(4).text());
+ });
+</script>

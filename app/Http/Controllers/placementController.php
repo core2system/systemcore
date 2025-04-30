@@ -34,7 +34,7 @@ class placementController extends Controller
  }
 
  $app->update([
-    'status' =>'post',
+    'status' =>'Posted',
 ]);
 
 

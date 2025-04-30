@@ -46,7 +46,7 @@ class payrollController extends Controller
     
     ]);
     
-    ///return back();
+return back();
 
 }
 
@@ -60,6 +60,8 @@ public function paid(Request $request){
     if(!$app){
      return abort(404); 
 }
+
+return back();
 
 }
 

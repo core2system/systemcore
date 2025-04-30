@@ -244,7 +244,32 @@ $customizerHidden = 'customizer-hide';
 
     <div class="form-group" style="margin-top:9%;">
 
+
+
         <?php   if (Auth::user()) {?>
+
+                  <?php
+
+
+$host="localhost"; // Host name 
+$username="root"; // Mysql username 
+$password=""; // Mysql password 
+$db_name="coredb"; // Database name 
+$tbl_name="information"; // Table name 
+$conn = mysqli_connect("$host","$username","$password")or die("cannot connect"); 
+mysqli_select_db($conn,"$db_name")or die("cannot select DB");
+
+$getid=Auth::user()->code_id;
+$app=$get->applicant_id;
+
+$select="SELECT * FROM `core2_contract`  where  employee_id='$app' and  client_id='$getid'
+";
+$mysql=mysqli_query($conn,$select);
+if(mysqli_num_rows($mysql)){ ?>
+    <div style="text-align:center;margin-top:4%;">
+      <button type="button" name="submit" class="btn btn-primary" style="display:none;" disabled> SELECTED CANDIDATE</button>
+  </div>
+<?php }else{?>
 
 <form action="{{url('candidate')}}" method="POST">
       @csrf
@@ -254,7 +279,11 @@ $customizerHidden = 'customizer-hide';
   <button  type="submit" name="submit" class=" btn btn-primary form-control">SELECT CANDIDATE</button>
 
 </form>
-        <?php }else{?>
+<?php } ?>
+
+
+
+
 <?php } ?>
 
 

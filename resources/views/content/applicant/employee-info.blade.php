@@ -70,10 +70,12 @@ $customizerHidden = 'customizer-hide';
           @csrf
         </form>
       <?php } else {?>
-       <a class="nav-item nav-link" href="#"  style="font-size:20px;position:relative;top:-5px;">    
-     
-          <button type="button"  class=" btn btn-success" id="sign">Sign Up</button>
-      
+       <a class="nav-item nav-link" href="{{url('/signup')}}"  style="font-size:20px;position:relative;top:-5px;">    
+        <form method="POST" action="{{url('/signup')}}">
+          @csrf
+          @method('GET')
+          <button type="submit" name="submit" class=" btn btn-success" id="update_btn">Sign Up</button>
+        </form> 
       </a>
       <a class="nav-item nav-link" href="javascript:void(0) "  style="font-size:20px;position:relative;top:-5px;"><button class="btn btn-success" id="login">Login</button></a>
     <?php  }?>
@@ -81,82 +83,77 @@ $customizerHidden = 'customizer-hide';
 </div>
 </div>
 </nav> 
-
-
 <div class="container-fluid">
-  <div style="text-align:center;margin-top:9%;">
-    <p style="font-style:Sans-serif;font-size:50px;margin-bottom:0;">We connect people to bring projects to life</p>
-    <p style="font-style:Sans-serif;font-size:40px;padding:0;margin:0;">EASY AND FAST</p>
-  </div>
 
+<div  style="height:500px;margin-top:10%;">
+  
 
-
-
-  <div class="row " style="margin-top:5%;" >
-    <div class="col-md-5" style="margin-top:10%">
-     <p style="text-align:center;">FIND HIGH QUALITY TALENTED EMPLOYEE</p>
-     <button class="btn  btn-primary mb-4" style="margin-left:39%;">
-      HIRE ME
-    </button>
-
-  </div>
-
-
-  <div class="col-md-6">
-
-    <img src="{{asset('assets/img/find.jpg')}}" style="width:100%;height:400px;">
-  </div>
-
-  <div class="col-md-4">
-
-  </div>
-  <div class="col-md-4" style="margin-top:5%">
-    <p style="text-align:center;">FIND APPLICANT </p>
-    <form class=" mt-3 ml-3 mw-100 navbar-search"  style="margin-left:7px" autocomplete="off">
-      <div class="input-group">
-        <input type="text"  id="myInput" onkeyup="myFunction()" class="form-control bg-light border-1 small" placeholder="Search Applicant..." aria-label="Search" aria-describedby="basic-addon2" >
-        <div class="input-group-append">
-          <button class="btn btn-primary" type="button" style="height:40px;">
-            <i class="fas fa-search fa-sm" ></i>
-          </button>
+    <div class="card" >
+  <h2 style="text-align;center">EMPLOYEE INFO</h2>
+    <div style="display:flex;margin-bottom:3%;">
+      <form class=" mt-3 ml-3 mw-100 navbar-search"  style="margin-left:7px" autocomplete="off">
+        <div class="input-group">
+          <input type="text"  id="myInput" onkeyup="myFunction()" class="form-control bg-light border-1 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" >
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button" style="height:40px;">
+              <i class="fas fa-search fa-sm"></i>
+            </button>
+          </div>
         </div>
-      </div>
-    </form>
-  </div>
-  <div class="col-md-4">
-  </div>
-</div>
-
-
-<div class="contents">
- <div class="row" style="margin-top:10%;">
-  @foreach($post as  $pos)
-  <div class="col-md-4 mt-2 mb-2 titles"> 
-    <div class="card" style="width: 25rem;">
-      <img class="card-img-top" src="{{ asset('assets/img/'.$pos->image) }}" alt="Card image cap" style="height:300px;">
-      <div class="card-body">
-        <h5 class="card-title " style="color:blue"></h5>
-        <p class="card-text fw-bold text-center" style="text-transform:uppercase;">{{$pos->firstname}} {{$pos->middlename}} {{$pos->lastname}}</p>
-        <p class="card-text fw-bold text-center text-primary" style="text-transform:uppercase;">{{$pos->jobrole}}</p>
-        <p class="card-text text-center" style="text-transform:uppercase;">{{$pos->description}}</p>
-        <div style="text-align:center;">
-          <form action="{{url('applicantview')}}" method="POST">
-              @csrf
-            <input type="hidden" value="{{$pos->applicant_id}}" name="getid" style="display:none;">
-            <button type="submit" class="btn btn-primary ml-3">VIEW</button>
-          </form>
-        </div>
-      </div>
+      </form>
     </div>
-  </div>
-  @endforeach
+    <div class="card-datatable table-responsive">
+      <table class="datatables-projects table border-top">
+        <thead>
+          <tr>
+
+           <th>Employee Name</th>
+           <th>Contract</th>
+           <th>Date hired</th>
+           <th>Status</th>
+           <th>Action</th>
+         </tr>
+       </thead>
+
+       <tbody>
+        @foreach($emp as $m)
+         <tr class="contents">
+          <td style="display:none;">{{$m->contract_id}}</td>
+           <td class="titles">{{$m->employee}}</td>
+           <td>     <?php
+
+           $file=$m->contract_file;
+           if(empty($file)){?>
+            <label>N/A</label>
+            <?php
+          }else{ 
+
+            ?>
+            <button class="btn  btn-sm btn-flat btn-primary">
+
+              <a href="http://127.0.0.1:8000/assets/img/<?php echo $m->contract_file;?>" style="color:white;" target="_blank" >
+                view
+              </a>
+            </button>
+          <?php }
+
+          ?></td>
+           <td>{{$m->date_hired}}</td>
+           <td>{{$m->sta}}</td>
+               <td><button class="btn btn-danger btn-sm btn-flat" id="open_resume">Upload Contract</i>  </button></td>
+         </tr>
+         @endforeach
+       </tbody>
+
+</table>
 </div>
 </div>
+</div>
 
 
 
 
-<div class="modal" tabindex="-1" role="dialog" id="login_modal">
+<div class="modal" tabindex="-1" role="dialog" id="update_status">
   <div class="modal-dialog" role="document">
    <form method="POST" action="{{route('login')}}">
     @csrf
@@ -186,43 +183,33 @@ $customizerHidden = 'customizer-hide';
 </div>
 
 
-
-
-<div class="modal" tabindex="-1" role="dialog" id="signupmodal">
+<div class="modal" tabindex="-1" role="dialog" id="resume_modal">
   <div class="modal-dialog" role="document">
-
+   <form method="POST"   action="{{url('storecontract')}}" enctype="multipart/form-data">
+    @csrf
+    @method('POST')
 
     <div class="modal-content">
       <div class="modal-header">
-  
+        <h5 class="modal-title text-center" style="text-align:center;">UPLOAD CONTRACT</h5>
       </div>
       <div class="modal-body">
-        <div class="form-group mb-3">
-   
-        <form method="POST" action="{{url('/signup')}}">
-          @csrf
-          @method('GET')
-          <button type="submit" name="submit" class=" btn btn-primary form-control">CLIENT SIGN UP</button>
-        </form> 
- 
-        </div>
         <div class="form-group">
-      <form method="POST" action="{{url('/employee/sign/view')}}">
-          @csrf
-          @method('GET')
-          <button type="submit" name="submit" class=" btn btn-success form-control" >EMPLOYEE SIGN UP</button>
-        </form> 
+
+          <input  type="file" class="form-control" name="contract_file">
         </div>
+
+        <input  type="text" class="form-control" name="contract_id" id="contract_id" style="display:none;">
+
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" id="modal_close-sign">Close</button>
+          <button type="submit" name="submit" class="btn btn-primary">SAVE</button>
+          <button type="button" class="btn btn-danger" id="modal_close">Close</button>
         </div>
       </div>
     </div>
+  </form>
 </div>
 </div>
-
-
-
 
 
 
@@ -308,31 +295,10 @@ $customizerHidden = 'customizer-hide';
 @endsection
 
 
-<script >
-  $(document).on('click', '#login', function () {
-    $('#login_modal').modal('show');
-  });
-  $(document).on('click', '#modal_close', function () {
-    $('#login_modal').modal('hide');
-  });
-</script>
-
-
-<script >
-  $(document).on('click', '#sign', function () {
-    $('#signupmodal').modal('show');
-  });
-
-
-  $(document).on('click', '#modal_close-sign', function () {
-    $('#signupmodal').modal('hide');
-  });
-</script>
-
-
-
 
 <script type="text/javascript">
+
+
  $(document).ready(function(){
   $('#myInput').keyup(function(){
 // Search text
@@ -346,5 +312,22 @@ $customizerHidden = 'customizer-hide';
 
 });
 
+
+
+
+</script>
+
+
+<script >
+  $(document).on('click', '#open_resume', function () {
+    $('form')[0].reset();
+    var tr = $(this).closest("tr").find('td');
+    $('#contract_id').val(tr.eq(0).text());
+    $('#resume_modal').modal('show');
+  });
+
+  $(document).on('click', '#modal_close', function () {
+    $('#resume_modal').modal('hide');
+  });
 
 </script>

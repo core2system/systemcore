@@ -21,6 +21,7 @@ public  function applicant(Request $request){
   return view('content.applicant.applicant-info',['pageConfigs' => $pageConfigs],['getdata' =>$getdata]);
 }
 public function  selectcandidate(Request $request){
+
   $date = new DateTime('now', new DateTimeZone('Asia/Manila'));
   $Date=$date->format('Y-m-d h:i:s');
   contract::create([
@@ -29,10 +30,13 @@ public function  selectcandidate(Request $request){
     'status' =>'Pending',
     'date' => $Date,
   ]);
+
   $get=$request->applicant_id;
   $getdata = DB::select("select   *  from  core1_applicant where  applicant_id='$get' ");
   $pageConfigs = ['myLayout' => 'blank'];
   return view('content.applicant.applicant-info',['pageConfigs' => $pageConfigs],['getdata' =>$getdata]);
+
+
 }
 
 

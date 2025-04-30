@@ -32,7 +32,7 @@
 
       <div class="col-xl-3 col-md-4 col-6 mb-4">
         <div class="card bg-primary">
-          <img class="card-img-top" src="{{ asset('assets/img/'.$pos->image) }}" alt="Card image cap" style="height:300px;">
+          <img class="card-img-top" src="{{ asset('assets/img/'.$pos->m) }}" alt="Card image cap" style="height:300px;">
           <div class="card-body">
             <h5 class="card-title " style="color:white"></h5>
             <p class="card-text fw-bold text-center" style="text-transform:uppercase;color:white;">{{$pos->firstname}} {{$pos->middlename}} {{$pos->lastname}}</p>

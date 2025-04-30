@@ -18,6 +18,7 @@ return new class extends Migration
          $table->string('contract_file')->nullable();
          $table->string('date')->nullable();
          $table->string('status')->nullable();
+         $table->string('date_hired')->nullable();
          $table->timestamps();
   //
      });

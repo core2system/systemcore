@@ -45,6 +45,8 @@
            <th>email</th>
            <th>Contract</th>
            <th>Employee Name</th>
+           <th>Date hired</th>
+           <th>Status</th>
            <th>Action</th>
          </tr>
        </thead>
@@ -62,8 +64,8 @@
            $file=$emp->contract_file;
            if(empty($file)){?>
             <label>N/A</label>
-           <?php
-            }else{ 
+            <?php
+          }else{ 
 
             ?>
             <button class="btn  btn-sm btn-flat btn-primary">
@@ -77,66 +79,46 @@
           ?>
         </td>
         <td>{{$emp->employee}}</td>
+        <td>{{$emp->date_hired}}</td>
+        <td>{{$emp->sta}}</td>
         <td> 
           <div class="dropdown">
             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
               <i class="ti ti-dots-vertical"></i>
             </button>
-            <div class="dropdown-menu">
+            <div class="dropdown-menu">      
+              <form action="{{url('hired')}}" method="Post">
+                @csrf
+                @method('POST')
+                <input type="hidden" name="contract_ids" value="{{$emp->contract_id}}">
+                <a class="dropdown-item">
+                  <button type="submit" class="btn  btn-success btn-sm btn-flat mb-3" style="font-size:15px;">
+                   <i class="fas fa-check"></i>
+                 </button>
+                 Hired
+               </a>
+             </form>
 
-              <a class="dropdown-item" id="open_resume">
 
-                <button type="button"  id="open_resume" class="btn  btn-danger btn-sm btn-flat mb-3" style="font-size:15px;">
-
-                  <i class="fas fa-file-upload" id="open_resume"></i>
-                </button>
-                Upload contract
-              </a>
-
-              <a class="dropdown-item">
-                <button type="button"  id="viewmodal" class="btn  btn-warning btn-sm btn-flat mb-3" style="font-size:15px;">
-                  <i class="fa-solid fa-eye"  id="viewmodal"></i>
-                </button>
-                Employee Info
-              </a>
-            </div>
-          </div>
-        </td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
+                 <form action="{{url('cancel')}}" method="Post">
+                @csrf
+                @method('POST')
+                <input type="hidden" name="cancel_id" value="{{$emp->contract_id}}">
+                <a class="dropdown-item">
+                  <button type="submit" class="btn  btn-danger btn-sm btn-flat mb-3" style="font-size:15px;">
+                  <i class="fas fa-times-circle"></i>
+                 </button>
+                 Cancel
+               </a>
+             </form>
+         </div>
+       </div>
+     </td>
+   </tr>
+   @endforeach
+ </tbody>
+</table>
 </div>
-</div>
-</div>
-
-
-
-<div class="modal" tabindex="-1" role="dialog" id="resume_modal">
-  <div class="modal-dialog" role="document">
-   <form method="POST"   action="{{url('storecontract')}}" enctype="multipart/form-data">
-    @csrf
-    @method('POST')
-
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-center" style="text-align:center;">UPLOAD CONTRACT</h5>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-
-          <input  type="file" class="form-control" name="contract_file">
-        </div>
-
-        <input  type="text" class="form-control" name="contract_id" id="contract_id" style="display:none;">
-
-        <div class="modal-footer">
-          <button type="submit" name="submit" class="btn btn-primary">SAVE</button>
-          <button type="button" class="btn btn-danger" id="modal_close">Close</button>
-        </div>
-      </div>
-    </div>
-  </form>
 </div>
 </div>
 

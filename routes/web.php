@@ -164,8 +164,6 @@ Route::post('/applicant.update', [App\Http\Controllers\placementController::clas
 
 Route::get('/client/agreement', [App\Http\Controllers\clientcontractController::class,'index'])->name('client-agreement');
 
-Route::post('/storecontract', [App\Http\Controllers\clientcontractController::class,'storefile'])->name('storefile');
-
 
 
 Route::get('/app/chat', [Chat::class, 'index'])->name('app-chat');
@@ -186,8 +184,37 @@ Route::post('/payrollstore', [App\Http\Controllers\payrollController::class,'cre
 Route::post('/payrollupdate', [App\Http\Controllers\payrollController::class,'paid'])->name('paid');
 Route::get('/history/view', [App\Http\Controllers\transactionController::class,'index'])->name('index');
 Route::get('/position/job/view', [App\Http\Controllers\positionjobController::class,'index'])->name('index');
+Route::post('/hired', [App\Http\Controllers\clientcontractController::class,'hiredupdate'])->name('hiredupdate');
+
+Route::post('/cancel', [App\Http\Controllers\clientcontractController::class,'canceledupdate'])->name('canceledupdate');
+
+
+///client
+Route::get('/employee/info', [App\Http\Controllers\employeeController::class,'index'])->name('index');
+Route::post('/storecontract', [App\Http\Controllers\employeeController::class,'storefile'])->name('storefile');
+
+
+
+
+
+
+///employee 
+Route::get('/employee/payroll/view', [App\Http\Controllers\employeepayrollController::class,'index'])->name('index');
+Route::get('/employee/profile/view', [App\Http\Controllers\EmployeeprofileController::class,'index'])->name('index');
+
+Route::post('/profilestoreImage', [App\Http\Controllers\EmployeeprofileController::class,'storeImage'])->name('storeImage');
+
+Route::get('/employee/contract/view', [App\Http\Controllers\employeecontractController::class,'index'])->name('index');
+
+
+
 });
 
+
+Route::post('/sign', [App\Http\Controllers\employeesignController::class,'signemployee'])->name('signemployee');
+
+
+Route::get('/employee/sign/view', [App\Http\Controllers\employeesignController::class,'index'])->name('index');
 
 
 
@@ -290,9 +317,11 @@ Route::get('/app/user/view/connections', [UserViewConnections::class, 'index'])-
 Route::get('/app/access-permission', [AccessPermission::class, 'index'])->name('app-access-permission');
 
 // pages
-Route::get('/pages/user/profile', [UserProfile::class, 'index'])->name('pages-profile-user');
+
 Route::post('/storeImage', [UserProfile::class,'storeImage'])->name('storeImage');
 Route::post('/userupdate', [UserProfile::class,'update'])->name('userupdate');
+
+Route::get('/pages/profile-user', [UserProfile::class, 'index'])->name('pages-profile-user');
 
 
 Route::get('/pages/profile-teams', [UserTeams::class, 'index'])->name('pages-profile-teams');

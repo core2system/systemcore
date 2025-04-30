@@ -39,7 +39,7 @@ $customizerHidden = 'customizer-hide';
 <div class="container-xxl  " style="padding:0;">
  <nav class="navbar navbar-expand-lg navbar-dark bg-primary  " style="padding:0px;" >
   <div class="container-fluid">
-   <a class="navbar-brand" href="javascript:void(0)">CLIENT</a>
+   <a class="navbar-brand" href="javascript:void(0)"></a>
    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-ex-7">
      <span class="navbar-toggler-icon"></span>
    </button>
@@ -59,56 +59,26 @@ $customizerHidden = 'customizer-hide';
 
 
 <div class="container-fluid">
- <form method="POST" action="{{route('signup.store')}}">
+ <form method="POST" action="{{url('sign')}}">
    @csrf
    @method('POST')
    <div class="row " style="margin-top:5%;" >
     <div class="col-md-5">
 
-      <p style="color:blue;text-align:center;font-size:30px;">CLIENT REGISTER AN ACCOUNT</p>
+      <p style="color:blue;text-align:center;font-size:30px;">EMPLOYEE REGISTER AN ACCOUNT</p>
+          <div class="form-group mt-3 ">
+        <label>Employee Id</label>
+        <input type="text" name="employeeid" class="form-control" style="background-color: inherit; border-top: none; border-left: none; border-right: none; box-shadow: none !important; border-color: #000 !important;">
+      </div>
+
       <div class="form-group mt-3 ">
         <label>Email Address</label>
-        <input type="text" name="email" class="form-control" style="background-color: inherit; border-top: none; border-left: none; border-right: none; box-shadow: none !important; border-color: #000 !important;">
+        <input type="text" name="emailemployee" class="form-control" style="background-color: inherit; border-top: none; border-left: none; border-right: none; box-shadow: none !important; border-color: #000 !important;">
       </div>
       <div class="form-group m-3" style="">
         <label>Password</label>
-        <input type="password" name="password" class="form-control" style="background-color: inherit; border-top: none; border-left: none; border-right: none; box-shadow: none !important; border-color: #000 !important;" required> 
+        <input type="password" name="passwordemployee" class="form-control" style="background-color: inherit; border-top: none; border-left: none; border-right: none; box-shadow: none !important; border-color: #000 !important;" required> 
       </div>
-      <div class="form-group m-3">
-        <label>First Name</label>
-        <input type="text" name="first" class="form-control" style="background-color: inherit; border-top: none; border-left: none; border-right: none; box-shadow: none !important; border-color: #000 !important;" required>
-
-      </div>
-
-      <div class="form-group m-3">
-        <label>Middle Name</label>
-        <input type="text" name="middle" class="form-control" style="background-color: inherit; border-top: none; border-left: none; border-right: none; box-shadow: none !important; border-color: #000 !important;" required>
-
-      </div>
-
-      <div class="form-group m-3">
-        <label>Last Name</label>
-        <input type="text" name="last" class="form-control" style="background-color: inherit; border-top: none; border-left: none; border-right: none; box-shadow: none !important; border-color: #000 !important;" required>
-      </div>
-
-      <div class="form-group m-3">
-        <label>Company</label>
-        <input type="text" name="company" class="form-control" style="background-color: inherit; border-top: none; border-left: none; border-right: none; box-shadow: none !important; border-color: #000 !important;" required>
-      </div>
-
-      <div class="form-group m-3">
-        <label>Contact</label>
-        <input type="text" name="contact" class="form-control" style="background-color: inherit; border-top: none; border-left: none; border-right: none; box-shadow: none !important; border-color: #000 !important;" required>
-      </div>
-
-
-
-      <div class="form-group mt-3 ">
-        <label>Company Address</label>
-        <input type="text" name="address" class="form-control" style="background-color: inherit; border-top: none; border-left: none; border-right: none; box-shadow: none !important; border-color: #000 !important;" required>
-      </div>
-
-
 
       <div class="form-group mt-3 ">
         <button type="submit" name="submit" class="form-control btn btn-primary"  style="color:white;">Register</button>

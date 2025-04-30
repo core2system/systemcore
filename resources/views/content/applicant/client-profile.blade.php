@@ -62,6 +62,7 @@ $customizerHidden = 'customizer-hide';
       <a class="nav-item nav-link active" href="{{url('/') }}" style="font-size:20px">Home</a>
       <a class="nav-item nav-link" href="{{url('/about') }} "  style="font-size:20px">About</a>
       <a class="nav-item nav-link" href="javascript:void(0) "  style="font-size:20px">Contact</a>
+           <a class="nav-item nav-link" href="{{url('/employee/info')}}"  style="font-size:20px">Employee Info</a>
       <a class="nav-item nav-link" href="javascript:void(0) "  style="font-size:20px">Profile Account</a>
 
       <a class="nav-item nav-link" href="javascript:void(0) "  style="font-size:20px;position:relative;top:-5px;">    

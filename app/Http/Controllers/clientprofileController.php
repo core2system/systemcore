@@ -50,6 +50,9 @@ $app = signup::where('client_id',$id);
     return back();
        
     }
+
+
+    
 public function update(Request $request){
 $user_id=Auth::user()->id;
 $id=$request->client_id;

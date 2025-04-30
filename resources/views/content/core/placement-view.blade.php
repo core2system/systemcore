@@ -61,14 +61,14 @@
             <td>
              <?php 
              $status=$app->st;
-             if($status=='post'){?>
+             if($status=='Posted'){?>
                <span class="badge bg-primary">{{$app->st}}</span>
              <?php }?>
            </td>
            <td>
             <?php 
             $status=$app->st;
-            if($status=='post'){?>
+            if($status=='Posted'){?>
             <?php }else{ ?>
               <form  action="{{route('applicant.update')}}" id="formAuthentication" class="mb-3" method="POST">
                 @csrf
@@ -91,7 +91,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5>APPLICANT EXAM </h5>
+        <h5>APPLICANT INFORMATION</h5>
       </div>
       <div class="modal-body">
         <?php

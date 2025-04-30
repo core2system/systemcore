@@ -20,6 +20,7 @@ class contract extends Model
         'date',
         'contract_id',
         'status',
+        'date_hired',
         
     ];
 }
